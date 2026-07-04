@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lc.mapper.RoleResourceMapper">
+    <insert id="batchInsert">
+        INSERT INTO role_resource (role_id, resource_id) VALUES
+        <foreach collection="ids" separator="," item="item">
+            (#{roleId},#{item})
+        </foreach>
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE role_resource SET status = #{status} WHERE role_id = #{roleId}
+    </update>
+</mapper>

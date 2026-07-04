@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lc.mapper.UserInfoMapper">
+    <delete id="deleteJoinById" parameterType="java.lang.Integer">
+        DELETE ui,u FROM user_info ui LEFT JOIN user u ON ui.user_id = u.id
+        WHERE ui.id = #{id}
+    </delete>
+
+    <select id="selectUserPage" resultType="com.lc.model.entity.UserInfo">
+        SELECT ui.id,ui.user_id,ui.name,ui.phone,ui.gender,u.username FROM user_info ui
+        LEFT JOIN user u on ui.user_id = u.id
+        LEFT JOIN user_role ur ON ui.user_id = ur.user_id
+        WHERE
+        <if test="roleId != null">
+            ur.role_id = #{roleId} AND
+        </if>
+        <if test="name != null and name !=''">
+            ui.name LIKE CONCAT('',#{name},'') AND
+        </if>
+        1 = 1
+    </select>
+</mapper>

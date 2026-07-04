@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lc.mapper.OrderSaleMapper">
+
+    <resultMap id="SelectAllOrderInfoMP" type="com.lc.model.vo.OrderSaleVo">
+        <id column="id" property="id"/>
+        <result column="created_time" property="CreatedTime"/>
+        <result column="amount" property="amount"/>
+        <result column="sum" property="sum"/>
+        <result column="goods_id" property="GoodsId"/>
+    </resultMap>
+
+    <resultMap id="SelectAllOrderSaleMP" type="com.lc.model.vo.OrderVo">
+        <id column="id" property="id"/>
+        <result column="created_time" property="CreatedTime"/>
+        <result column="sum" property="sum"/>
+    </resultMap>
+
+
+    <select id="SelectAllOrderInfo" resultMap="SelectAllOrderInfoMP">
+        select o.id , o.created_time ,o.sum, oi.amount,oi.goods_id
+        from `order` o left join order_info oi
+                                 on o.id = oi.order_id
+    </select>
+
+    <select id="GetSale" parameterType="Integer" resultType="java.lang.Double">
+        select sum(amount) from order_info oi where goods_id= #{id} and order_id= #{OrderId}
+    </select>
+
+    <select id="SelectAllOrderInfoWeek"  parameterType="java.util.Date" resultMap="SelectAllOrderInfoMP">
+        select o.id , o.created_time ,o.sum, oi.amount,oi.goods_id
+        from `order` o left join order_info oi
+                                 on o.id=oi.order_id where o.created_time between #{BeginWeek} and #{EndWeek}
+    </select>
+
+    <select id="SelectAllOrderSaleWeek" parameterType="java.util.Date" resultMap="SelectAllOrderSaleMP">
+         select o.id,o.created_time,o.sum
+         from `order` o where o.created_time between  #{BeginWeek} and DATE_ADD(#{EndWeek},INTERVAL 1 DAY)
+    </select>
+
+
+    <select id="SelectAllOrderInfoPeriodOfTime" parameterType="java.util.Date" resultMap="SelectAllOrderInfoMP">
+        select o.id , o.created_time ,o.sum, oi.amount,oi.goods_id
+        from `order` o left join order_info oi
+                                 on o.id=oi.order_id where o.created_time between #{BeginTime} and DATE_ADD(#{EndTime},INTERVAL 1 DAY)
+    </select>
+
+</mapper>
