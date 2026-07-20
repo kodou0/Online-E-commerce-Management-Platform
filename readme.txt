@@ -61,7 +61,6 @@ Local: http://localhost:8080/
 Network: http://localhost:8080/
 
 V. System Test Accounts (For Login)
-表格
 Account	Password	Role Permission
 admin	123456	Super Administrator
 charles1	1234	Administrator
